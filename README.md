@@ -1,1 +1,1 @@
-# Seneca-Suppy-Store
+# Seneca-Suppy-Store Backend Codebase
