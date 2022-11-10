@@ -1,0 +1,17 @@
+{
+  "name": "capstone-backend",
+  "version": "1.0.0",
+  "description": "Backend server for the capstone.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r dotenv/config index.js dotenv_config_path=./.env.production",
+    "start:dev": "node -r dotenv/config index.js dotenv_config_path=./.env.development",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zia Jacky Shehtab",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
