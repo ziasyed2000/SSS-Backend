@@ -7,7 +7,6 @@
 const express = require("express");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const validator = require('validator');
 const bodyParser = require('body-parser');
 const dotenv = require("dotenv");
 dotenv.config();
