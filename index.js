@@ -8,6 +8,7 @@ const express = require("express");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -41,7 +42,8 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(cors());
 
 const auth=async(req,res,next)=>{
 
@@ -143,6 +145,7 @@ app.post('/api/login', (req, res) => {
         })
     });
 });
+
 app.post('/secret-route', auth, (req, res) => {
     console.log(req.id);
     res.send('This is the secret content. Only logged in users can see this!');
