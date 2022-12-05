@@ -85,6 +85,7 @@ app.post('/api/registration', (req, res) => {
         username: username
     }
 
+    //We hash the password when storing it inside the database
     bcrypt.hash(password, 8).then((hash) => {
         //Set the password to hash value
         user.password = hash;
@@ -113,6 +114,7 @@ app.post('/api/login', (req, res) => {
     //Destructure variables from the body
     const {email, password} = req.body;
 
+    //We first check if the email exists in the database
     db.collection("users").where("email", "==", email)
     .get()
     .then((querySnapshot) => {
@@ -120,6 +122,7 @@ app.post('/api/login', (req, res) => {
             //Check if password matches
             bcrypt.compare(password, doc.data().password)
             .then((isMatch) => {
+                //If the password is not correct
                 if (isMatch === false) {
                     return res.status(401).send({
                         message:"Incorrect Password"
@@ -144,13 +147,47 @@ app.post('/api/login', (req, res) => {
     });
 });
 
+//Recent 20 products route
+app.get('/products/recent', (req, res) => {
+    //Sample array of objects for products
+
+    // [
+    //     {
+    //         id: 1,
+    //         title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
+    //         price: 109.95,
+    //         description: 'Your perfect pack for everyday use and walks in the forest.',
+    //         category: "men's clothing",
+    //         image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+    //         rating: {
+    //             rate: 3.9,
+    //             count: 120
+    //         }
+    //     },
+    //     ...
+    // ]
+
+    //We will use a data generation api for now, sends the recent 20 products
+    fetch('https://fakestoreapi.com/products')
+    .then((response) => response.json())
+    .then((jsonData) => {
+        res.send(jsonData);
+    })
+    .catch((error) => {
+        res.send({
+            message: "Unable to fetch data"
+        });
+    })
+});
+
 app.post('/secret-route', authenticateUser, (req, res) => {
     console.log(req.id);
     res.send('This is the secret content. Only logged in users can see this!');
 });
 
+
 app.get('/', (req, res) => {
-    res.send('<h1>SSS BACKEND API - V1.1</h1>')
+    res.send('<h1>SSS BACKEND API - V1.2</h1>')
 })
 
 app.listen(PORT, () => console.log(`Server Running On Port ${PORT}`));
