@@ -152,7 +152,7 @@ app.post('/secret-route', auth, (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('<h1>SSS BACKEND API</h1>')
+    res.send('<h1>SSS BACKEND API - V1.1</h1>')
 })
 
 app.listen(PORT, () => console.log(`Server Running On Port ${PORT}`));
