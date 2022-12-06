@@ -118,33 +118,27 @@ app.post('/api/login', (req, res) => {
     db.collection("users").where("email", "==", email)
     .get()
     .then((querySnapshot) => {
-        try {
-            querySnapshot.forEach((doc) => {
-                //Check if password matches
-                bcrypt.compare(password, doc.data().password)
-                .then((isMatch) => {
-                    //If the password is not correct
-                    if (isMatch === false) {
-                        return res.status(401).send({
-                            message:"Incorrect Password"
-                        })
-                    }
-    
-                    //Generate token if password is correct
-                    const token = jwt.sign({ id: doc.data().username.toString() }, process.env.SECRET_KEY);
-    
-                    return res.status(200).send({
-                        message: "Logged in Successfully",
-                        user: doc.data(),
-                        token
+        querySnapshot.forEach((doc) => {
+            //Check if password matches
+            bcrypt.compare(password, doc.data().password)
+            .then((isMatch) => {
+                //If the password is not correct
+                if (isMatch === false) {
+                    return res.status(401).send({
+                        message:"Incorrect Password"
                     })
+                }
+
+                //Generate token if password is correct
+                const token = jwt.sign({ id: doc.data().username.toString() }, process.env.SECRET_KEY);
+
+                return res.status(200).send({
+                    message: "Logged in Successfully",
+                    user: doc.data(),
+                    token
                 })
-            });
-        } catch (error) {
-            return res.status(401).send({
-                message:'User Does Not Exist'
             })
-        }
+        });
     })
     .catch((error) => {
         return res.status(401).send({
